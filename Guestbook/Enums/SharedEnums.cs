@@ -7,5 +7,11 @@
             Male = 0,
             Female = 1
         }
+
+        public enum Status
+        {
+            NotActive = 0,
+            Active = 1
+        }
     }
 }
