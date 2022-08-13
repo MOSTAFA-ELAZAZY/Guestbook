@@ -58,6 +58,17 @@ namespace Guestbook.Repository
             return MessageCreated;
         }
 
+        public async Task EditMessage(int id, string massage)
+        {
+            var query = "UPDATE [Messages] SET [Message] = @Message where Id =@Id";
+            var paramters = new DynamicParameters();
+            paramters.Add("Message", massage, DbType.String);
+            paramters.Add("Id", id, DbType.Int32);
+
+            using (var connection = _context.CreateConnection())
+                await connection.ExecuteAsync(query, paramters);
+        }
+
         public async Task<Message> GetMessage(int Id, int UserId)
         {
             //Select message If it Active That Mean it's not Deleted

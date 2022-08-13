@@ -52,5 +52,26 @@ namespace Guestbook.Controllers
             
         }
 
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> EditMessage(int id, [FromBody] MessageForEditDto messageForEditDto)
+        {
+            try
+            {
+                //First Check If The Person who Want Eadit The MEssage Who Send It 
+                var CreatedMessage = await _messageRepo.GetMessage(id, messageForEditDto.UserId);
+                //If No Reutrn Erorr
+                if (CreatedMessage == null)
+                    return NotFound();
+                //Elese Send The Message To Finction
+                await _messageRepo.EditMessage(id, messageForEditDto.Message);
+
+                return NoContent();
+            }
+            catch
+            {
+                return BadRequest();
+            }
+        }
     }
 }
