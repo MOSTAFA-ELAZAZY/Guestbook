@@ -1,4 +1,5 @@
-﻿using Guestbook.Entities;
+﻿using Guestbook.Dto.user;
+using Guestbook.Entities;
 
 namespace Guestbook.Contracts
 {
@@ -7,5 +8,6 @@ namespace Guestbook.Contracts
         //Create Interface for Login Function 
         public Task<User> Login(string email, string password = "");
 
+        public Task<User> Register(UserForCreationDto NewUser);
     }
 }

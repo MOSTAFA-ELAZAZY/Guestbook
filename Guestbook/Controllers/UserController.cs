@@ -26,5 +26,27 @@ namespace Guestbook.Controllers
             //If Found Id 
             return Ok(user);
         }
+
+
+        [HttpPost]
+        [Route("Register")]
+        public async Task<IActionResult> Register([FromBody] UserForCreationDto NewUser)
+        {
+            //First Check If Email Is In DataBase Or Not
+            var user = await _userRepo.Login(NewUser.Email, "");
+            //User Not Equl Null That Mean We Found This Mail In Data Base
+            if (user != null)
+                return NotFound();
+
+            //Else We Create New User
+            var CreatedUser = await _userRepo.Register(NewUser);
+            //And Return Data
+            return Ok(new
+            {
+                id = CreatedUser.Id,
+                Name = CreatedUser.Name,
+                Email = CreatedUser.Email,
+            });
+        }
     }
 }
