@@ -58,6 +58,16 @@ namespace Guestbook.Repository
             return MessageCreated;
         }
 
+        public async Task DeleteMessage(int id, int userId)
+        {
+            //We Dont Delete Message But Upate Status From ACtive To Not ACtive (Soft Delete)
+            var query = "Update [Messages] set Status =@NotActive where id=@Id and UserId=@UserId";
+            //Open Connection
+            using (var connection = _context.CreateConnection())
+                //Run Query 
+                await connection.ExecuteAsync(query, new { Status.NotActive, id, userId });
+        }
+
         public async Task EditMessage(int id, string massage)
         {
             var query = "UPDATE [Messages] SET [Message] = @Message where Id =@Id";

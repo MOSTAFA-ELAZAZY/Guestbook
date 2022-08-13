@@ -8,5 +8,6 @@ namespace Guestbook.Contracts
         public Task<Message> AddNewMessage(MessageForCreationDto NewMessage);
         public Task<Message> GetMessage(int Id, int UserId = 0);
         public Task EditMessage(int id, string massage);
+        public Task DeleteMessage(int id, int userId);
     }
 }

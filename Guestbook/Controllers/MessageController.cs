@@ -73,5 +73,27 @@ namespace Guestbook.Controllers
                 return BadRequest();
             }
         }
+
+        [HttpDelete("{id}/{userid}")]
+        public async Task<IActionResult> DeleteMessage(int id, int userid)
+        {
+            try
+            {
+                //First Chweck If user Want Delete MEssage He Who Send It Or Not 
+                var CreatedMessage = await _messageRepo.GetMessage(id, userid);
+                //If Not Reutrn Not Found 
+                if (CreatedMessage == null)
+                    return NotFound();
+                //IF He Who Send This Message Delete It
+                await _messageRepo.DeleteMessage(id, userid);
+                return NoContent();
+            }
+            catch
+            {
+                return BadRequest();
+            }
+           
+        }
+
     }
 }
