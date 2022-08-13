@@ -6,6 +6,7 @@ using Guestbook.Entities;
 using Guestbook.Enums;
 using System.Data;
 using static Dapper.SqlMapper;
+using static Guestbook.Enums.SharedEnums;
 
 namespace Guestbook.Repository
 {
@@ -57,6 +58,23 @@ namespace Guestbook.Repository
             return MessageCreated;
         }
 
-
+        public async Task<Message> GetMessage(int Id, int UserId)
+        {
+            //Select message If it Active That Mean it's not Deleted
+            string query = "Select * from Messages where Id = @Id and  Status = @Status ";
+            //if We Want Chek We userId 
+            if (UserId > 0)
+            {
+                query = query + " and UserId=@UserId ";
+            }
+            //open Connection
+            using (var connection = _context.CreateConnection())
+            {
+                //Run Quray 
+                var message = await connection.QueryFirstOrDefaultAsync<Message>(query, new { Id, Status = Status.Active, UserId });
+                //Return Message
+                return message;
+            }
+        }
     }
 }

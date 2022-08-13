@@ -17,6 +17,7 @@ namespace Guestbook.Repository
 
         public async Task<User> Login(string email, string password = "")
         {
+
             // Create Select Statment 
             var query = "Select [Id],[Name],[Email],[Gender] From Users Where Email = @Email ";
             //I Create This Validation For Use It When We Check If Email 

@@ -6,5 +6,6 @@ namespace Guestbook.Contracts
     public interface IMessageRepository
     {
         public Task<Message> AddNewMessage(MessageForCreationDto NewMessage);
+        public Task<Message> GetMessage(int Id, int UserId = 0);
     }
 }

@@ -18,13 +18,20 @@ namespace Guestbook.Controllers
         [Route("Login")]
         public async Task<IActionResult> Login(UserForLoginDto UserForLoginDto)
         {
-            //Send Data From User To Function 
-            var user = await _userRepo.Login(UserForLoginDto.Email, UserForLoginDto.Password);
-            //If Email Or Password are Wrong Return Not Found 404 Erorr Code
-            if (user == null)
-                return NotFound();
-            //If Found Id 
-            return Ok(user);
+            try
+            {
+                //Send Data From User To Function 
+                var user = await _userRepo.Login(UserForLoginDto.Email, UserForLoginDto.Password);
+                //If Email Or Password are Wrong Return Not Found 404 Erorr Code
+                if (user == null)
+                    return NotFound();
+                //If Found Id 
+                return Ok(user);
+            }
+            catch
+            {
+                return BadRequest();
+            }
         }
 
 
@@ -32,21 +39,28 @@ namespace Guestbook.Controllers
         [Route("Register")]
         public async Task<IActionResult> Register([FromBody] UserForCreationDto NewUser)
         {
-            //First Check If Email Is In DataBase Or Not
-            var user = await _userRepo.Login(NewUser.Email, "");
-            //User Not Equl Null That Mean We Found This Mail In Data Base
-            if (user != null)
-                return NotFound();
-
-            //Else We Create New User
-            var CreatedUser = await _userRepo.Register(NewUser);
-            //And Return Data
-            return Ok(new
+            try
             {
-                id = CreatedUser.Id,
-                Name = CreatedUser.Name,
-                Email = CreatedUser.Email,
-            });
+                //First Check If Email Is In DataBase Or Not
+                var user = await _userRepo.Login(NewUser.Email, "");
+                //User Not Equl Null That Mean We Found This Mail In Data Base
+                if (user != null)
+                    return NotFound();
+
+                //Else We Create New User
+                var CreatedUser = await _userRepo.Register(NewUser);
+                //And Return Data
+                return Ok(new
+                {
+                    id = CreatedUser.Id,
+                    Name = CreatedUser.Name,
+                    Email = CreatedUser.Email,
+                });
+            }
+            catch
+            {
+                return BadRequest();
+            }
         }
     }
 }
