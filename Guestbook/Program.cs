@@ -2,8 +2,10 @@ using FluentValidation;
 using FluentValidation.AspNetCore;
 using Guestbook.Context;
 using Guestbook.Contracts;
+using Guestbook.Dto.Message;
 using Guestbook.Dto.user;
 using Guestbook.Repository;
+using Guestbook.Validation.Message;
 using Guestbook.Validation.User;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,6 +15,9 @@ builder.Services.AddControllers().AddFluentValidation(x =>
 });
 builder.Services.AddTransient<IValidator<UserForCreationDto>, UserValidator>();
 builder.Services.AddTransient<IValidator<UserForLoginDto>, LoginValidator>();
+
+builder.Services.AddTransient<IValidator<MessageForEditDto>, EditMessageValidator>();
+builder.Services.AddTransient<IValidator<MessageForCreationDto>, CreationMessageValidator>();
 
 // Add services to the container.
 
